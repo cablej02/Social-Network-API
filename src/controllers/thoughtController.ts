@@ -1,0 +1,36 @@
+import Thought from '../models/Thought.js';
+import { Request, Response } from 'express';
+
+export const getAllThoughts = async (_req: Request, res: Response) => {
+    try {
+        const thoughts = await Thought.find();
+        res.json(thoughts);
+    } catch (err) {
+        res.status(500).json({ message: `Failed to get thoughts. ${err}` });
+    }
+};
+
+export const getSingleThought = async (req: Request, res: Response) => {
+    try {
+        // get thought by object id from request parameters
+        // TODO: check findById vs findOne
+        const thought = await Thought.findById(req.params.id);
+
+        if (!thought) {
+            res.status(404).json({ message: 'Thought not found.' });
+        }else{
+            res.json(thought);
+        }
+    } catch (err) {
+        res.status(500).json({ message: `Failed to get thought. ${err}` });
+    }
+};
+
+export const createThought = async (req: Request, res: Response) => {
+    try {
+        const thought = await Thought.create(req.body);
+        res.json(thought);
+    } catch (err) {
+        res.status(500).json({ message: `Failed to create thought. ${err}` });
+    }
+};

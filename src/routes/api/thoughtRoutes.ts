@@ -1,9 +1,13 @@
-// import Thought from '../../models/Thought';
-import { Router, Request,Response } from 'express';
+import { Router } from 'express';
 const router = Router();
 
-router.route('/').get((_req: Request, res: Response) => {
-    res.json({ message: 'Hello, world!' });
-});
+// import controller
+import { getAllThoughts, getSingleThought, createThought } from '../../controllers/thoughtController.js';
+
+// /api/thoughts
+router.route('/').get(getAllThoughts).post(createThought);
+
+// /api/thoughts/:id
+router.route('/:id').get(getSingleThought);
 
 export default router;
