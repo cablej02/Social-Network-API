@@ -64,13 +64,13 @@ export const deleteUser = async (req: Request, res: Response) => {
 export const addFriend = async (req: Request, res: Response) => {
     try {
         const user = await User.findByIdAndUpdate(
-            req.params.id, 
+            req.params.userId, 
             { $addToSet: { friends: req.params.friendId } }, // prevent duplicates 
             { new: true }
         );
 
         if (!user) {
-            res.status(404).json({ message: 'User not found.' });
+            res.status(404).json({ message: 'User not found. Unable to add friend.' });
         } else {
             res.json(user);
         }
@@ -82,7 +82,7 @@ export const addFriend = async (req: Request, res: Response) => {
 export const removeFriend = async (req: Request, res: Response) => {
     try {
         const user = await User.findByIdAndUpdate(
-            req.params.id,
+            req.params.userId,
             { $pull: { friends: req.params.friendId } },
             { new: true }
         );
