@@ -59,7 +59,19 @@ export const updateThought = async (req: Request, res: Response) => {
 export const deleteThought = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.findByIdAndDelete(req.params.id);
-        res.json(thought);
+
+        if (!thought) {
+            res.status(404).json({ message: 'Thought not found.' });
+        } else {
+            //delete from user's thoughts array
+            await User.findOneAndUpdate(
+                {username: thought.username},
+                { $pull: { thoughts: thought._id } },
+                { new: true }
+            );
+
+            res.json(thought);
+        }
     } catch (err) {
         res.status(500).json({ message: `Failed to delete thought. ${err}` });
     }
