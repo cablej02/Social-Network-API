@@ -13,7 +13,6 @@ export const getAllThoughts = async (_req: Request, res: Response) => {
 export const getSingleThought = async (req: Request, res: Response) => {
     try {
         // get thought by object id from request parameters
-        // TODO: check findById vs findOne
         const thought = await Thought.findById(req.params.id);
 
         if (!thought) {

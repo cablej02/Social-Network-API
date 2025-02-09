@@ -33,3 +33,21 @@ export const createUser = async (req: Request, res: Response) => {
         res.status(500).json({ message: `Failed to create user. ${err}` });
     }
 };
+
+export const updateUser = async (req: Request, res: Response) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: `Failed to update user. ${err}` });
+    }
+};
+
+export const deleteUser = async (req: Request, res: Response) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: `Failed to delete user. ${err}` });
+    }
+};
