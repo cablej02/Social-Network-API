@@ -1,3 +1,4 @@
+import Thought from '../models/Thought.js';
 import User from '../models/User.js';
 import { Request, Response } from 'express';
 
@@ -46,7 +47,15 @@ export const updateUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
-        res.json(user);
+
+        if (!user) {
+            res.status(404).json({ message: 'User not found.' });
+        } else {
+            // delete all thoughts associated with the user
+            await Thought.deleteMany({ username: user.username });
+
+            res.json(user);
+        }
     } catch (err) {
         res.status(500).json({ message: `Failed to delete user. ${err}` });
     }

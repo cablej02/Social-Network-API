@@ -33,3 +33,21 @@ export const createThought = async (req: Request, res: Response) => {
         res.status(500).json({ message: `Failed to create thought. ${err}` });
     }
 };
+
+export const updateThought = async (req: Request, res: Response) => {
+    try {
+        const thought = await Thought.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(thought);
+    } catch (err) {
+        res.status(500).json({ message: `Failed to update thought. ${err}` });
+    }
+};
+
+export const deleteThought = async (req: Request, res: Response) => {
+    try {
+        const thought = await Thought.findByIdAndDelete(req.params.id);
+        res.json(thought);
+    } catch (err) {
+        res.status(500).json({ message: `Failed to delete thought. ${err}` });
+    }
+};
