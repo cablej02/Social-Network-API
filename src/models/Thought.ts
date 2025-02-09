@@ -15,10 +15,11 @@ interface IThought extends Document {
 }
 
 const reactionSchema = new Schema<IReaction>({
-    reactionId: {
-        type: Schema.Types.ObjectId,
-        default: () => new Types.ObjectId()
-    },
+    // omitted this field and just using default _id
+    // reactionId: {
+    //     type: Schema.Types.ObjectId,
+    //     default: () => new Types.ObjectId()
+    // },
     reactionBody: {
         type: String,
         required: true,
@@ -33,6 +34,11 @@ const reactionSchema = new Schema<IReaction>({
         default: Date.now,
         get: (createdAt: Date): string => createdAt.toLocaleString()
     } as unknown as Date // cast to make typescript happy
+}, {
+    toJSON: {
+        getters: true
+    },
+    id: false
 });
 
 const thoughtSchema = new Schema<IThought>(
